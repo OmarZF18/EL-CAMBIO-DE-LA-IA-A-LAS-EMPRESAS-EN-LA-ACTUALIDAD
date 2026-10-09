@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plataforma interactiva de aprendizaje: Ingeniería de Prompt y Administración Aumentada por IA - Material de Evaluación por Omar Zavala Flores.">
+    <meta name="author" content="Omar Zavala Flores">
+    <title>Ingeniería de Prompt & Administración Aumentada | Omar Zavala Flores</title>
+    
+    <!-- Fuentes Tipográficas Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos Lucide (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ==========================================================================
+           VARIABLES GLOBALES & ESTILOS BASE (FULL-WIDTH / BORDERLESS)
+           ========================================================================== */
+        :root {
+            --bg-body: #070a12;
+            --bg-surface: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.95);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(56, 189, 248, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-cyan: #38bdf8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #34d399;
+            --accent-amber: #fbbf24;
+            --accent-rose: #f43f5e;
+            
+            --gradient-primary: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #8b5cf6 100%);
+            --gradient-dark: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(7, 10, 18, 0.95) 100%);
+            
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            
+            --shadow-glow: 0 0 35px rgba(56, 189, 248, 0.15);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        /* Indicador de lectura superior */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        .full-width {
+            width: 100%;
+            padding-left: clamp(1rem, 4vw, 4rem);
+            padding-right: clamp(1rem, 4vw, 4rem);
+        }
+
+        /* ==========================================================================
+           BARRA DE NAVEGACIÓN Y ENCABEZADO
+           ========================================================================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(7, 10, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-badge {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-cyan);
+        }
+
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: #fff;
+            padding: 0.55rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            box-shadow: var(--shadow-glow);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        /* ==========================================================================
+           HERO SECTION (PORTADA TIPO EXECUTIVE BORDERLESS)
+           ========================================================================== */
+        .hero {
+            position: relative;
+            padding: 6rem 0 4rem;
+            background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.15) 0%, rgba(139, 92, 246, 0.08) 35%, transparent 70%);
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 0.825rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 4.5vw, 4.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 1.25rem;
+            background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-meta-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .hero-meta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+        }
+
+        .meta-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .meta-item {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 0.85rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .meta-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           MENÚ INTERACTIVO DE MÓDULOS (STICKY SUB-NAV)
+           ========================================================================== */
+        .subnav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 61px;
+            z-index: 900;
+            padding: 0.6rem 0;
+        }
+
+        .subnav-wrapper {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+
+        .subnav-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-cyan);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        /* ==========================================================================
+           CONTENIDO PRINCIPAL Y SECCIONES
+           ========================================================================== */
+        .section-block {
+            padding: 4.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            scroll-margin-top: 120px;
+        }
+
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        /* Grid Cards Generales */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .interactive-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .card-icon-wrapper {
+            width: 46px;
+            height: 46px;
+            border-radius: var(--radius-sm);
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-body {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           MÓDULO 1: TABLA COMPARATIVA PROCESO ADMINISTRATIVO
+           ========================================================================== */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(12px);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 650px;
+        }
+
+        .custom-table th {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1.1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .custom-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ==========================================================================
+           MÓDULO 2: CONMUTADOR INTERACTIVO MÉTODOS TRADICIONAL VS IA VS HÍBRIDO
+           ========================================================================== */
+        .domain-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .domain-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: var(--transition-fast);
+        }
+
+        .domain-btn.active {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+
+        .domain-content-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .method-box {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .method-box.highlight {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .method-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag-trad { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+        .tag-ai { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+        .tag-hybrid { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
+
+        /* ==========================================================================
+           MÓDULO 3: MATRIZ DE AUTONOMÍA DELEGADA CON FILTROS INTERACTIVOS
+           ========================================================================== */
+        .risk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-low { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .risk-med { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+        .risk-high { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+
+        /* ==========================================================================
+           MÓDULO 4: PERSPECTIVAS COMPARATIVAS (ACADÉMICO VS 10 AÑOS)
+           ========================================================================== */
+        .perspective-switcher {
+            display: flex;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 0.35rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            max-width: fit-content;
+            margin-bottom: 2rem;
+        }
+
+        .perspective-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .perspective-btn.active {
+            background: var(--gradient-primary);
+            color: #fff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .perspective-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           MÓDULO 5: BITÁCORA Y EVALUACIÓN DE PROMPT ENGINEERING
+           ========================================================================== */
+        .search-bar-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.25rem 0.9rem 3rem;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .prompt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+
+        .prompt-card:hover {
+            border-color: var(--border-accent);
+        }
+
+        .prompt-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .prompt-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .prompt-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-cyan);
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prompt-score-badge {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .score-excellent { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .score-good { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .score-avg { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+
+        .prompt-body {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: none;
+            background: rgba(7, 10, 18, 0.5);
+        }
+
+        .prompt-body.active {
+            display: block;
+        }
+
+        .prompt-text-block {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            margin-bottom: 1.25rem;
+            white-space: pre-wrap;
+        }
+
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .eval-metric-box {
+            background: rgba(30, 41, 59, 0.4);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .eval-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .eval-value {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           MÓDULO 6: BIBLIOGRAFÍA Y REFERENCIAS APA 2020
+           ========================================================================== */
+        .biblio-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .biblio-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .biblio-icon {
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        /* ==========================================================================
+           FOOTER GENERAL
+           ========================================================================== */
+        .footer {
+            padding: 3rem 0;
+            background: #05070d;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           RESPONSIVIDAD Y MEDIA QUERIES
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .domain-content-card {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none; /* En pantallas pequeñas se prioriza la subnav sticky */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE PROGRESO DE LECTURA Superior -->
+    <div id="progress-bar"></div>
+
+    <!-- ENCABEZADO PRINCIPAL (NAVBAR) -->
+    <header class="navbar">
+        <div class="full-width nav-wrapper">
+            <a href="#" class="brand-logo">
+                <i data-lucide="cpu" style="color: var(--accent-cyan);"></i>
+                <span>Aumenta<span style="color: var(--accent-cyan);">AI</span></span>
+                <span class="brand-badge">Evaluation Suite</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#transformacion" class="nav-link"><i data-lucide="trending-up" size="16"></i> Transformación</a></li>
+                    <li><a href="#competitividad" class="nav-link"><i data-lucide="zap" size="16"></i> Competitividad</a></li>
+                    <li><a href="#autonomia" class="nav-link"><i data-lucide="shield-check" size="16"></i> Autonomía</a></li>
+                    <li><a href="#bitacora" class="nav-link"><i data-lucide="terminal" size="16"></i> Bitácora Prompts</a></li>
+                </ul>
+            </nav>
+
+            <a href="#bitacora" class="nav-cta">
+                <i data-lucide="file-check" size="16"></i>
+                Ver Evaluación Prompts
+            </a>
+        </div>
+    </header>
+
+    <!-- PORTADA / HERO SECTION (FULL BORDERLESS) -->
+    <section class="hero">
+        <div class="full-width hero-grid">
+            <div>
+                <div class="hero-tag">
+                    <i data-lucide="sparkles" size="14"></i>
+                    Material para Evaluación de Unidad
+                </div>
+                <h1 class="hero-title">Ingeniería de Prompt & <span>Administración Aumentada</span></h1>
+                <p class="hero-description">
+                    Ecosistema interactivo sobre la reestructuración de la ciencia administrativa mediante Inteligencia Artificial, el modelo de Autonomía Delegada y el análisis técnico de prompts interactivos.
+                </p>
+            </div>
+
+            <!-- CARD DE AUTORÍA Y METADATOS -->
+            <div class="hero-meta-card">
+                <div class="author-box">
+                    <div class="author-avatar">OZ</div>
+                    <div class="author-info">
+                        <h4>Omar Zavala Flores</h4>
+                        <p>Evaluación de Unidad - Prompt Engineering</p>
+                    </div>
+                </div>
+
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <div class="meta-label">Materia / Unidad</div>
+                        <div class="meta-value">Ingeniería de Prompt</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Puntuación Prompts</div>
+                        <div class="meta-value" style="color: var(--accent-emerald);">8.53 / 10</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Despliegue</div>
+                        <div class="meta-value">GitHub Pages</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Año de Evaluación</div>
+                        <div class="meta-value">2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENÚ INTERACTIVO STICKY (NAVEGACIÓN RÁPIDA DE MÓDULOS) -->
+    <nav class="subnav">
+        <div class="full-width subnav-wrapper">
+            <button class="tab-btn active" onclick="scrollToSection('transformacion', this)">
+                <i data-lucide="layers" size="16"></i> 1. Transformación
+            </button>
+            <button class="tab-btn" onclick="scrollToSection('competitividad', this)">
+                <i data-lucide="cpu" size="16"></i> 2. Métodos Híbridos
+            </button>
+            <button class="tab-btn" onclick="scrollToSection('autonomia', this)">
+                <i data-lucide="shield" size="16"></i> 3. Marco Autonomía
+            </button>
+            <button class="tab-btn" onclick="scrollToSection('perspectivas', this)">
+                <i data-lucide="messages-square" size="16"></i> 4. Explicaciones
+            </button>
+            <button class="tab-btn" onclick="scrollToSection('bitacora', this)">
+                <i data-lucide="code" size="16"></i> 5. Bitácora Prompts
+            </button>
+            <button class="tab-btn" onclick="scrollToSection('bibliografia', this)">
+                <i data-lucide="book-open" size="16"></i> 6. Referencias
+            </button>
+        </div>
+    </nav>
+
+    <main class="full-width">
+
+        <!-- ==========================================================================
+           MÓDULO 1: TRANSFORMACIÓN DE LA CIENCIA ADMINISTRATIVA POR IA
+           ========================================================================== -->
+        <section id="transformacion" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="git-commit" size="16"></i> Módulo 1</div>
+                <h2 class="section-title">El Proceso Administrativo: Tradicional vs. IA</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Etapa del Proceso</th>
+                            <th>Enfoque Tradicional</th>
+                            <th>Enfoque Impulsado por IA</th>
+                            <th>Impacto en Eficiencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Planeación</strong></td>
+                            <td>Extrapolación histórica y análisis cualitativo periódico.</td>
+                            <td>Modelación predictiva continua y simulación en tiempo real.</td>
+                            <td><span class="risk-badge risk-low">+80% Precisión</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Organización</strong></td>
+                            <td>Jerarquías funcionales rígidas con tramos estáticos.</td>
+                            <td>Estructuras en red y equipos híbridos (humano-agente).</td>
+                            <td><span class="risk-badge risk-low">Reducción de Silos</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dirección</strong></td>
+                            <td>Decisiones guiadas por intuición y experiencia ejecutiva.</td>
+                            <td>Inteligencia de Decisión (*Decision Intelligence*) prescriptiva.</td>
+                            <td><span class="risk-badge risk-low">Zero-Delay</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Control</strong></td>
+                            <td>Auditorías posteriores e indicadores retrospectivos.</td>
+                            <td>Monitoreo automatizado continuo y alertas proactivas.</td>
+                            <td><span class="risk-badge risk-low">Prevención Activa</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MÓDULO 2: MÉTODO TRADICIONAL VS IA VS HÍBRIDO POR ÁREAS OPERATIVAS
+           ========================================================================== -->
+        <section id="competitividad" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="zap" size="16"></i> Módulo 2</div>
+                <h2 class="section-title">Comparativa de Ejecución Operativa</h2>
+            </div>
+
+            <!-- Selector de Áreas -->
+            <div class="domain-tabs">
+                <button class="domain-btn active" onclick="switchDomain('soporte', this)">Atención al Cliente</button>
+                <button class="domain-btn" onclick="switchDomain('finanzas', this)">Finanzas e Inventario</button>
+                <button class="domain-btn" onclick="switchDomain('reclutamiento', this)">Reclutamiento RRHH</button>
+                <button class="domain-btn" onclick="switchDomain('marketing', this)">Marketing & Ventas</button>
+            </div>
+
+            <!-- Tarjeta Dinámica de Contenido -->
+            <div id="domain-display" class="domain-content-card">
+                <!-- Se llena dinámicamente con JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MÓDULO 3: MARCO DE AUTONOMÍA DELEGADA Y GUARDACOSTAS ALGORÍTMICOS
+           ========================================================================== -->
+        <section id="autonomia" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="shield-check" size="16"></i> Módulo 3</div>
+                <h2 class="section-title">Marco de Autonomía Delegada</h2>
+            </div>
+
+            <div class="grid-cards">
+                <div class="interactive-card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <span class="risk-badge risk-low" style="margin-bottom: 0.75rem;">Nivel Verde - Bajo Riesgo</span>
+                    <h3 class="card-title">Autonomía Algorítmica Sustantiva</h3>
+                    <p class="card-body">
+                        <strong>Operación:</strong> Tareas rutinarias, análisis transaccional y borradores iniciales.<br>
+                        <strong>Rol IA / Humano:</strong> La IA ejecuta el 100% de la tarea de forma autónoma. El especialista humano realiza auditorías aleatorias a posteriori.
+                    </p>
+                </div>
+
+                <div class="interactive-card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <span class="risk-badge risk-med" style="margin-bottom: 0.75rem;">Nivel Amarillo - Riesgo Medio</span>
+                    <h3 class="card-title">Agencia Aumentada (Copilotaje)</h3>
+                    <p class="card-body">
+                        <strong>Operación:</strong> Propuestas comerciales, campañas y código de software.<br>
+                        <strong>Rol IA / Humano:</strong> La IA genera el 80% inicial del trabajo; el profesional valida la calidad, edita y autoriza el despliegue final.
+                    </p>
+                </div>
+
+                <div class="interactive-card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="shield-alert"></i>
+                    </div>
+                    <span class="risk-badge risk-high" style="margin-bottom: 0.75rem;">Nivel Rojo - Alto Riesgo</span>
+                    <h3 class="card-title">Gobernanza Prescriptiva Humana</h3>
+                    <p class="card-body">
+                        <strong>Operación:</strong> Asignación de capital, estrategia corporativa y dilemas éticos.<br>
+                        <strong>Rol IA / Humano:</strong> La IA simula escenarios predictivos. La decisión final e imputabilidad legal permanece 100% en la Alta Dirección.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MÓDULO 4: EXPLICACIONES POR PERSPECTIVA (ACADÉMICA VS INFANTIL)
+           ========================================================================== -->
+        <section id="perspectivas" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="languages" size="16"></i> Módulo 4</div>
+                <h2 class="section-title">Adaptabilidad de Explicación</h2>
+            </div>
+
+            <div class="perspective-switcher">
+                <button class="perspective-btn active" onclick="switchPerspective('academico', this)">
+                    <i data-lucide="graduation-cap" size="16"></i> Expresión Académica
+                </button>
+                <button class="perspective-btn" onclick="switchPerspective('infantil', this)">
+                    <i data-lucide="smile" size="16"></i> Para Niños de 10 Años
+                </button>
+            </div>
+
+            <div id="perspective-card" class="perspective-card">
+                <!-- Se llena con JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MÓDULO 5: BITÁCORA Y EVALUACIÓN DE PROMPT ENGINEERING
+           ========================================================================== -->
+        <section id="bitacora" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="terminal" size="16"></i> Módulo 5</div>
+                <h2 class="section-title">Bitácora & Evaluación de Prompts</h2>
+            </div>
+
+            <!-- Buscador de Prompts -->
+            <div class="search-bar-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="prompt-search" class="search-input" placeholder="Buscar por número o palabra clave en los prompts..." oninput="filterPrompts()">
+            </div>
+
+            <!-- Lista de Prompts -->
+            <div id="prompts-container">
+                <!-- Se genera dinámicamente con JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MÓDULO 6: BIBLIOGRAFÍA Y REFERENCIAS (FORMATO APA 2020)
+           ========================================================================== -->
+        <section id="bibliografia" class="section-block">
+            <div class="section-header">
+                <div class="section-subtitle"><i data-lucide="book-open" size="16"></i> Módulo 6</div>
+                <h2 class="section-title">Referencias Bibliográficas (APA 7ª Ed.)</h2>
+            </div>
+
+            <ul class="biblio-list">
+                <li class="biblio-item">
+                    <i data-lucide="bookmark" class="biblio-icon"></i>
+                    <div>
+                        Davenport, T. H., & Mittal, N. (2022). <em>All-in on AI: How smart companies win big with artificial intelligence</em>. Harvard Business Review Press.
+                    </div>
+                </li>
+                <li class="biblio-item">
+                    <i data-lucide="bookmark" class="biblio-icon"></i>
+                    <div>
+                        Fayol, H. (1916). <em>Administration industrielle et générale</em>. Dunod et Pinat.
+                    </div>
+                </li>
+                <li class="biblio-item">
+                    <i data-lucide="bookmark" class="biblio-icon"></i>
+                    <div>
+                        Iansiti, M., & Lakhani, K. R. (2020). <em>Competing in the age of AI: Strategy and leadership when algorithms and networks run the world</em>. Harvard Business Review Press.
+                    </div>
+                </li>
+                <li class="biblio-item">
+                    <i data-lucide="bookmark" class="biblio-icon"></i>
+                    <div>
+                        McKinsey & Company. (2023). <em>The economic potential of generative AI: The next productivity frontier</em>. McKinsey Global Institute.
+                    </div>
+                </li>
+                <li class="biblio-item">
+                    <i data-lucide="bookmark" class="biblio-icon"></i>
+                    <div>
+                        White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, B., Elnashar, A., Jocz, J., Spooner, S., & Schmidt, D. C. (2023). A prompt pattern catalog to enhance prompt engineering with ChatGPT. <em>arXiv preprint arXiv:2302.11382</em>.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- FOOTER GENERAL -->
+    <footer class="footer">
+        <div class="full-width">
+            <p>
+                <strong>Ingeniería de Prompt & Administración Aumentada</strong> &mdash; Desarrollado por <strong>Omar Zavala Flores</strong>
+            </p>
+            <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.8rem;">
+                Optimizado para despliegue continuo en <strong>GitHub Pages</strong> | 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA INTERACTIVA EN JAVASCRIPT -->
+    <script>
+        // Inicializar Iconos Lucide
+        lucide.createIcons();
+
+        // 1. Indicador de Progreso de Lectura
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // 2. Navegación Suave de Pestañas
+        function scrollToSection(id, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const target = document.getElementById(id);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 3. Datos del Módulo 2 (Métodos por Áreas)
+        const domainData = {
+            soporte: {
+                tradicional: "Atención manual secuencial con llamadas y correos. Tiempos de espera elevados en horas pico y resolución heterogénea.",
+                ia: "Chatbots de primera línea que responden FAQ en segundos, pero con riesgo de insatisfacción en casos ambiguos.",
+                hibrido: "La IA filtra el Nivel 1 y redacta borradores contextuales; los agentes humanos intervienen para personalizar la atención y fidelizar clientes."
+            },
+            finanzas: {
+                tradicional: "Cierres contables mensuales manuales en hojas de cálculo. Proyecciones basadas únicamente en histórico estático.",
+                ia: "Ajuste automático de inventarios y precios en tiempo real según demanda del mercado mediante algoritmos predictivos.",
+                hibrido: "La IA proyecta escenarios contables en segundos; los directores financieros auditan anomalías y aprueban la asignación estratégica de capital."
+            },
+            reclutamiento: {
+                tradicional: "Lectura manual hoja por hoja de cientos de currículums. Filtros propensos a sesgos personales y procesos de semanas.",
+                ia: "Filtrado automático por palabras clave mediante procesamiento de lenguaje natural (NLP) y agendamiento automático.",
+                hibrido: "La IA rankea competencias técnicas objetivas; la coordinación humana evalúa la idoneidad cultural, valores y soft skills."
+            },
+            marketing: {
+                tradicional: "Creación de un único anuncio generalista que toma días en diseñarse y probarse en el mercado.",
+                ia: "Generación masiva e instantánea de cientos de variaciones de imágenes y copies segmentados de forma autónoma.",
+                hibrido: "El especialista define la narrativa de marca y entrena al modelo; la IA produce variantes dinámicas que el diseñador valida y optimiza."
+            }
+        };
+
+        function switchDomain(domainKey, btn) {
+            document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const data = domainData[domainKey];
+            const container = document.getElementById('domain-display');
+            
+            container.innerHTML = `
+                <div class="method-box">
+                    <span class="method-tag tag-trad">Método Tradicional</span>
+                    <p class="card-body">${data.tradicional}</p>
+                </div>
+                <div class="method-box">
+                    <span class="method-tag tag-ai">Método con IA</span>
+                    <p class="card-body">${data.ia}</p>
+                </div>
+                <div class="method-box highlight">
+                    <span class="method-tag tag-hybrid">Optimización Híbrida 80/20</span>
+                    <p class="card-body">${data.hibrido}</p>
+                </div>
+            `;
+        }
+
+        // Cargar por defecto el primer dominio
+        switchDomain('soporte', document.querySelector('.domain-btn'));
+
+        // 4. Datos del Módulo 4 (Perspectivas)
+        const perspectiveData = {
+            academico: `
+                <h3 style="color: var(--accent-cyan); margin-bottom: 1rem; font-size: 1.3rem;">La Administración Aumentada y la Redefinición de la Agencia Decisoria</h3>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+                    La convergencia entre la inteligencia artificial y la teoría administrativa contemporánea da origen al paradigma de la <strong>Administración Aumentada</strong>, una reconfiguración estructural donde la competitividad no deriva de la sustitución del capital humano, sino de la redistribución estratégica de la agencia decisoria dentro de un sistema sociotécnico adaptativo.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; margin-top: 1rem;">
+                    La implementación de "guardacostas algorítmicos" desplaza la supervisión del control antecedente hacia la auditoría ex-post, mitigando la atrofia del juicio crítico y maximizando la velocidad institucional de respuesta.
+                </p>
+            `,
+            infantil: `
+                <h3 style="color: var(--accent-amber); margin-bottom: 1rem; font-size: 1.3rem;">La Nave Espacial y el Robot Copiloto</h3>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8;">
+                    Imagina que dirigir una empresa es como pilotar una nave espacial y la inteligencia artificial (IA) es un robot copiloto ultra rápido. La mejor forma de trabajar no es dejar que el robot maneje solo, ni tampoco hacer todo tú a mano, sino formar el equipo perfecto.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; margin-top: 1rem;">
+                    <strong>El Robot (IA)</strong> prepara los mapas y cálculos súper aburridos en tres segundos. <strong>Tú (el Humano)</strong> le pones tu creatividad, revisas que no se equivoque y tomas las decisiones importantes para mantener la nave a salvo.
+                </p>
+            `
+        };
+
+        function switchPerspective(type, btn) {
+            document.querySelectorAll('.perspective-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('perspective-card').innerHTML = perspectiveData[type];
+        }
+
+        switchPerspective('academico', document.querySelector('.perspective-btn'));
+
+        // 5. Datos de la Bitácora de Prompts y Evaluación
+        const promptLogData = [
+            {
+                id: 1,
+                text: "Actuaras como un experto en ciencias administrativas y me harás un texto muy explicativo y has una investigación muy profunda como esta cambiando la inteligencia artificial a las empresas.",
+                asertividad: "Alta",
+                completitud: "Buena",
+                puntuacion: "8.5/10",
+                badgeClass: "score-good",
+                eval: "Asignación clara de rol persona ('experto en ciencias administrativas') y delimitación temática correcta. Se puede optimizar especificando el formato final deseado."
+            },
+            {
+                id: 2,
+                text: "con estos datos la diferencias de objetivos que tan competitiva es al momento de hacer el trabajo",
+                asertividad: "Media",
+                completitud: "Regular",
+                puntuacion: "7.0/10",
+                badgeClass: "score-avg",
+                eval: "Prompt de seguimiento conciso. Carece de contexto explicito sobre si se refiere a competitividad laboral individual o empresarial, requiriendo desambiguación."
+            },
+            {
+                id: 3,
+                text: "en competitividad de las empresas cual crees tu que seria la mejor para contratar, buscando los mejores resultados sin comprometer la eficinecia",
+                asertividad: "Alta",
+                completitud: "Buena",
+                puntuacion: "8.2/10",
+                badgeClass: "score-good",
+                eval: "Aclara el marco competitivo enfocado en el perfil de contratación. Buen uso de restricción de calidad ('sin comprometer la eficiencia')."
+            },
+            {
+                id: 4,
+                text: "dame algunos ejemplos justificando los métodos de trabajo con con la ai de por medio y de manera tradicional",
+                asertividad: "Alta",
+                completitud: "Excelente",
+                puntuacion: "9.0/10",
+                badgeClass: "score-excellent",
+                eval: "Solicitud directa de casos prácticos comparativos. Genera una estructura clara de contraste operacional."
+            },
+            {
+                id: 5,
+                text: "la empresa necesita una critica que nos pueda construir una mejorar manera de llevarla necesito qué me des tus métodos de como mejorar cada uno de los métodos con ia y el método tradicional",
+                asertividad: "Alta",
+                completitud: "Excelente",
+                puntuacion: "9.2/10",
+                badgeClass: "score-excellent",
+                eval: "Introduce la perspectiva crítica constructiva, pidiendo optimizaciones tanto para las debilidades del método tradicional como del modelo con IA."
+            },
+            {
+                id: 6,
+                text: "si por el método hibrido es un método ya utilizado en el área, necesito que me des tablas explicativas como sobrellevarlo de manera mas eficiente y el esquema mejor explicado",
+                asertividad: "Alta",
+                completitud: "Excelente",
+                puntuacion: "9.5/10",
+                badgeClass: "score-excellent",
+                eval: "Definición explicita de formato estructurado ('tablas explicativas' y 'esquemas'). Excelente precisión de diseño de prompt."
+            },
+            {
+                id: 7,
+                text: "ahora me darás tu mejor respuesta para la utilización de este método para la empresa en general con los mejores métodos sin la necesidad de comprometer ninguno de los dos dando la mejor autonomía",
+                asertividad: "Alta",
+                completitud: "Excelente",
+                puntuacion: "9.0/10",
+                badgeClass: "score-excellent",
+                eval: "Solicita un marco integrador enfocado en maximizar autonomía sin perder control. Gran alineación estratégica."
+            },
+            {
+                id: 8,
+                text: "ahora me harás un expresión académica",
+                asertividad: "Alta",
+                completitud: "Buena",
+                puntuacion: "8.0/10",
+                badgeClass: "score-good",
+                eval: "Prompt de transformación de estilo y tono. Muy efectivo para cambiar el nivel del discurso al plano formal."
+            },
+            {
+                id: 9,
+                text: "ahora dame un resumen ejecutivo",
+                asertividad: "Alta",
+                completitud: "Buena",
+                puntuacion: "8.5/10",
+                badgeClass: "score-good",
+                eval: "Instrucción directa de síntesis ejecutiva. Permite sintetizar los puntos de decisión en tarjetas accionables."
+            },
+            {
+                id: 10,
+                text: "ahora hazme una explicación para un niño de 10 años",
+                asertividad: "Alta",
+                completitud: "Excelente",
+                puntuacion: "9.0/10",
+                badgeClass: "score-excellent",
+                eval: "Excelente prompt de simplificación por técnica 'Feynman'. Obliga a traducir conceptos complejos a analogías comprensibles."
+            }
+        ];
+
+        function renderPrompts(prompts) {
+            const container = document.getElementById('prompts-container');
+            container.innerHTML = '';
+
+            prompts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'prompt-card';
+                card.innerHTML = `
+                    <div class="prompt-header" onclick="togglePromptBody(${p.id})">
+                        <div class="prompt-title-group">
+                            <span class="prompt-number">${p.id}</span>
+                            <span style="font-weight: 600; color: #fff;">Prompt ${p.id}</span>
+                        </div>
+                        <span class="prompt-score-badge ${p.badgeClass}">${p.puntuacion}</span>
+                    </div>
+                    <div id="prompt-body-${p.id}" class="prompt-body">
+                        <div class="prompt-text-block">"${p.text}"</div>
+                        <div class="evaluation-grid">
+                            <div class="eval-metric-box">
+                                <div class="eval-label">Asertividad</div>
+                                <div class="eval-value">${p.asertividad}</div>
+                            </div>
+                            <div class="eval-metric-box">
+                                <div class="eval-label">Completitud Ingenieril</div>
+                                <div class="eval-value">${p.completitud}</div>
+                            </div>
+                            <div class="eval-metric-box" style="grid-column: span 2;">
+                                <div class="eval-label">Evaluación Técnica de Prompting</div>
+                                <div class="eval-value" style="font-size: 0.85rem; font-weight: 400; color: var(--text-secondary);">${p.eval}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function togglePromptBody(id) {
+            const body = document.getElementById(`prompt-body-${id}`);
+            if (body) {
+                body.classList.toggle('active');
+            }
+        }
+
+        function filterPrompts() {
+            const query = document.getElementById('prompt-search').value.toLowerCase();
+            const filtered = promptLogData.filter(p => 
+                p.text.toLowerCase().includes(query) || 
+                p.id.toString().includes(query) ||
+                p.eval.toLowerCase().includes(query)
+            );
+            renderPrompts(filtered);
+        }
+
+        // Renderizado inicial de prompts
+        renderPrompts(promptLogData);
+    </script>
+</body>
+</html>
